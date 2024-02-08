@@ -62,6 +62,10 @@ class ProductSearchForm(forms.ModelForm):
         model = Product
         fields = ['category', 'product_name', 'tags']
 
+class DecrementQuantityForm(forms.Form):
+    product_sku = forms.CharField(label='Product SKU', max_length=100)
+    quantity_to_decrement = forms.IntegerField(label='Quantity to Decrement', min_value=1)
+
 #Add Inbound Products
 class AddInboundProductForm(forms.ModelForm):
     supplier = forms.ModelChoiceField(queryset=Supplier.objects.all(), widget=forms.widgets.Select(attrs={"placeholder": "Supplier", "class": "form-control"}), label="", required=False)
@@ -101,5 +105,19 @@ class AddInboundProductForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+class RemoveProductInventoryForm(forms.ModelForm):
+    category = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder": "Category", "class": "form-control"}), label="")
+    product_sku = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder": "Product SKU", "class": "form-control"}), label="")
+    product_name = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder": "Product Name", "class": "form-control"}), label="")
+    location = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder": "Location", "class": "form-control"}), label="")
+    quantity = forms.IntegerField(required=True, widget=forms.widgets.NumberInput(attrs={"placeholder": "Quantity", "class": "form-control"}), label="")
+    remarks = forms.CharField(required=False, widget=forms.widgets.TextInput(attrs={"placeholder": "Remarks", "class": "form-control"}), label="")
+    tags = forms.CharField(required=False, widget=forms.widgets.TextInput(attrs={"placeholder": "Tags", "class": "form-control"}), label="")
+    supplier = forms.ModelChoiceField(queryset=Supplier.objects.all(), widget=forms.widgets.Select(attrs={"placeholder": "Supplier", "class": "form-control"}), label="", required=False)
+
+    class Meta:
+        model = Product
+        exclude = ("user", "supplier")
 
 

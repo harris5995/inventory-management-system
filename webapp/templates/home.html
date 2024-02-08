@@ -7,36 +7,54 @@
         <h1>Manager Dashboard</h1>
 
 </br>
-        
-        <div class="list-group">
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'register' %}">Register New Users</a>
-        </li>  
 
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'add_inventory_product'%}">Add Inventory Products</a>
-        </li>
-        
-        <li class="nav-item">
-                <a class="nav-link" href="{% url 'inventory_product_list' %}">View Inventory</a>
-        </li>
+<table class="table">
+<tbody>
+    <tr>
+        <th scope="row">User, Supplier & Customer Management</th>
+        <td><a class="btn btn-secondary" href="{% url 'register' %}">Register New Users</a> </td>
+        <td><a class="btn btn-secondary" href="{% url 'supplier_list' %}">Supplier List</a><td>
+        <td><a class="btn btn-secondary" href="{% url 'customer_list' %}">Customer List</a></td>
+    </tr>
+    <tr>
+      <th scope="row">Inventory</th>
+      <td><a class="btn btn-secondary" href="{% url 'inventory_product_list' %}">View Inventory</a></td>
+      <td><a class="btn btn-secondary" href="{% url 'add_inventory_product'%}">Add Inventory Products</a></td>
+    </tr>
+    <tr>
+      <th scope="row">Inbound Products</th>
+      <td><a class="btn btn-primary" href="{% url 'inbound_product_list' %}">View Inbound Products</a></td>
+      <td><a class="btn btn-primary" href="{% url 'add_inbound_product'%}">Add Inbound Products</a></td>
+    </tr>
+    <tr>
+        <th scope="row">Outbound Products</th>
+        <td><a class="btn btn-primary" href="{% url 'outbound_product_list' %}">View Outbound Products</a></td>
+        {% comment %} <td><a class="btn btn-primary" href="{% url 'add_outbound_product'%}">Add Inbound Products</a></td> {% endcomment %}
+      </tr>
+  </tbody>
+</table>
 
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'add_inbound_product'%}">Add Inbound Products</a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'inbound_product_list'%}">View Inbound Products</a>
-        </li>
-
-
-          </div>
-
-
-    
+<div class="mt-10">
+    <h3>**Charts for inventory, inbound and outbound workflow** </h3>
+</div>
 
     {% else %}
-        <h1>Hello Operator!</h1>
+        <h1 class="mb-5">Operator Dashboard</h1>
+        
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th scope="row">Inbound Products</th>
+                    <td><a class="btn btn-primary" href="{% url 'inbound_product_list' %}">View Inbound Products</a></td>
+                    <td><a class="btn btn-primary" href="{% url 'add_inbound_product'%}">Add Inbound Products</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">Outbound Products</th>
+                    <td><a class="btn btn-primary" href="{% url 'outbound_product_list' %}">View Outbound Products</a></td>
+              {% comment %} <td><a class="btn btn-primary" href="{% url 'add_outbound_product'%}">Add Inbound Products</a></td> {% endcomment %}
+                </tr>
+            </tbody>
+        </table>
     {% endif %}
 
 

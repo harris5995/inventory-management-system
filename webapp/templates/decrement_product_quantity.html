@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <h2>Add Outbound Product</h2>
+    <form method="POST" action="{% url 'decrement_product_quantity' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+    
+        <br/>
+    <a href="{% url 'inventory_product_list' %}" class="btn btn-secondary">Back</a>
+    <button type="submit" class="btn btn-secondary">Add Product </button>
+    <a href="{% url 'csv_upload' %}" class="btn btn-secondary">Upload CSV</a>
+
+{% endblock %}
+
+

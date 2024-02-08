@@ -33,7 +33,7 @@ def logout_user(request):
 
 def register_user(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             # Authenticate and login
@@ -41,14 +41,20 @@ def register_user(request):
             password = form.cleaned_data['password1']
             user = authenticate(username=username, password=password)
             login(request, user)
-            messages.success(request, "You Have Successfully Registered! Welcome!")
-            return redirect('home')
+            messages.success(request, "You have successfully registered a user")
+            return redirect('home')  # Assuming 'home' is the name of the URL pattern for your home page
     else:
-        form = SignUpForm()
+        form = UserCreationForm()
 
-    return render(request, 'operator_home', {'form': form})
+    return render(request, 'register.html', {'form': form})
 
+def supplier_list(request):
+    supplier = Supplier.objects.all()
+    return render(request, 'supplier_list.html', {'supplier': supplier})
 
+def customer_list(request):
+    customer = Customer.objects.all()
+    return render(request, 'customer_list.html', {'customer': customer})
 
 #--------------------------------------------------
 #The following are the views for the product inventory list
@@ -81,20 +87,71 @@ def inventory_product_detail(request, pk):
 
 @manager_required
 def add_inventory_product(request):
-    form = AddProductInventoryForm(request.POST or None)
-
     if request.user.is_authenticated:
         if request.method == "POST":
+            form = AddProductInventoryForm(request.POST)
             if form.is_valid():
-                add_inventory_product = form.save()
-                messages.success(request, "Product added")
-                return redirect('inventory_product_list')
-        return render(request, 'add_inventory_product.html', {'form':form})
+                # Extract data from the form
+                product_sku = form.cleaned_data['product_sku']
+                quantity = form.cleaned_data['quantity']
 
+                # Check if product with the same SKU exists
+                existing_product = Product.objects.filter(product_sku=product_sku).first()
+
+                if existing_product:
+                    # Update quantity if product already exists
+                    existing_product.quantity += quantity
+                    existing_product.save()
+                    messages.success(request, "Existing product quantity updated")
+                else:
+                    # Create new product if it doesn't exist
+                    form.save()
+                    messages.success(request, "New product added")
+
+                return redirect('inventory_product_list')
+        else:
+            form = AddProductInventoryForm()
+        return render(request, 'add_inventory_product.html', {'form': form})
     else:
         messages.success(request, "You must be logged in to add products")
         return redirect('home')
     
+
+def decrement_product_quantity(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = DecrementQuantityForm(request.POST)
+            if form.is_valid():
+                product_sku = form.cleaned_data['product_sku']
+                quantity_to_decrement = form.cleaned_data['quantity_to_decrement']
+
+                # Check if product exists with the given SKU
+                existing_product = Product.objects.filter(product_sku=product_sku).first()
+                if not existing_product:
+                    messages.error(request, "Product with this SKU does not exist")
+                    return redirect('decrement_product_quantity')
+
+                # Check if the current stock is greater than 0
+                if existing_product.quantity == 0:
+                    messages.error(request, "Current stock is 0")
+                    return redirect('decrement_product_quantity')
+
+                # Decrement the quantity
+                existing_product.quantity -= quantity_to_decrement
+                existing_product.save()
+
+                messages.success(request, f"Inventory product quantity updated")
+                return redirect('inventory_product_list')
+        else:
+            form = DecrementQuantityForm()
+
+        return render(request, 'decrement_product_quantity.html', {'form': form})
+    else:
+        messages.success(request, "You must be logged in to decrement product quantity")
+        return redirect('home')
+    
+    
+
 @manager_required
 def csv_upload(request):
     if request.method == 'POST':
@@ -166,6 +223,7 @@ def delete_inventory_product(request, pk):
         messages.success(request, "You must be logged in to delete the product")
         return redirect('home')
     
+
 #--------------------------------------------------
 #The following are the views for the inbound products        
 def inbound_product_list(request):
@@ -252,6 +310,8 @@ def add_inbound_product(request):
     else:
         messages.success(request, "You must be logged in to add products")
         return redirect('home')
+    
+
 
 # def add_inbound_product(request):
 #     if request.method == "POST":
@@ -347,7 +407,7 @@ def update_outbound_product(request, pk):
         messages.success(request, "You must be logged in to update product details")
         return redirect('home')
 
-def delete_inventory_product(request, pk):
+def delete_outbound_product(request, pk):
     if request.user.is_authenticated:
         delete_it = Outbound_Product.objects.get(id=pk)
         delete_it.delete()

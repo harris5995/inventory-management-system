@@ -13,6 +13,10 @@
                 <a class="nav-link" href="{% url 'inbound_product_list'%}">Inbound Products</a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'outbound_product_list'%}">Outbound Products</a>
+            </li>
+
             {% if user.userprofile.role == 'manager' %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'inventory_product_list' %}">Product Inventory</a>

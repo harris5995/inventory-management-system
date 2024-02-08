@@ -40,7 +40,7 @@ class Tag(models.Model):
    
 class Product(models.Model):
     category = models.CharField(max_length=100)
-    product_sku = models.CharField(max_length=100, unique=True)
+    product_sku = models.CharField(max_length=100)
     product_name = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
     quantity = models.IntegerField()
@@ -55,7 +55,7 @@ class Inbound_Product(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
     quantity_received = models.IntegerField()
-    tags = models.CharField(max_length=100)  #
+    tags = models.CharField(max_length=100) 
     remarks = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -66,6 +66,8 @@ class Outbound_Product(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     quantity_sold = models.IntegerField()
+    tags = models.CharField(max_length=100) 
+    remarks = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
