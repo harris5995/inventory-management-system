@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="card">
+  <div class="card-header"><strong>
+    	{{ product.product_name }} 
+		</strong>
+  </div>
+  <div class="card-body">
+
+
+<p class="card-text">
+<strong>Category: </strong>{{ product.category }}</p>
+
+<p class="card-text">
+<strong>Product SKU: </strong>{{ product.product_sku }}
+</p>
+
+<p class="card-text">
+<strong>Location: </strong>{{ product.location }}</p>
+
+<p class="card-text">
+<strong>Quantity: </strong>{{ product.quantity }}</p>
+
+<p class="card-text">
+<strong>Supplier: </strong>{{ product.supplier }}</p>
+
+<p class="card-text">
+<strong>Remarks: </strong>{{ product.remarks }}</p>
+
+<p class="card-text">
+<strong>Tags </strong>{{ product.tags }}</p>
+
+<p class="card-text">
+<strong>Created At: </strong>{{ product.created_at }}</p>
+
+<p class="card-text">
+    <strong>ID: </strong>{{ product.id }}</p>
+    
+    
+  </div>
+</div>
+
+<br/><br/>
+<a href="{% url 'inventory_product_list' %}" class="btn btn-secondary">Back</a>
+
+ <a href="{% url 'update_inventory_product' product.id %}" class="btn btn-secondary">Update Product</a>
+
+ <a href="{% url 'delete_inventory_product' product.id %}" class="btn btn-danger">Delete</a>  
+		
+
+{% endblock %}

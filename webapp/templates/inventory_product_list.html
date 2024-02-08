@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Inventory</h1>
+
+
+            <form method="POST" action="{% url 'inventory_product_list' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_category">Category:</label>
+                    {{ form.category }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_product_name">Product Name:</label>
+                    {{ form.product_name }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_tags">Tags:</label>
+                    {{ form.tags }}
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+
+
+  <br>
+
+<table class="table table-striped table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">Product ID</th>
+        <th scope="col">Category</th>
+        <th scope="col">Product SKU</th>
+        <th scope="col">Product Name</th>
+        <th scope="col">Location</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Remarks</th>
+        <th scope="col">Tags</th>
+        <th scope="col">Created At</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+        {% for product in inventory %}
+      <tr>
+          <td><a href="{% url 'inventory_product_detail' product.id %}">{{ product.id }}</td>
+            <td>{{ product.category}}</td>
+          <td>{{ product.product_sku }}</td>
+          <td>{{ product.product_name }}</td>
+          <td>{{ product.location }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>{{ product.remarks }}</td>
+          <td>{{ product.tags }}</td>
+          <td>{{ product.created_at }}</td>
+      </tr>
+        {% endfor %}
+    </tbody>
+</table>     
+
+{% endblock %}
+
