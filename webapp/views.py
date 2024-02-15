@@ -48,13 +48,103 @@ def register_user(request):
 
     return render(request, 'register.html', {'form': form})
 
+@manager_required 
 def supplier_list(request):
     supplier = Supplier.objects.all()
     return render(request, 'supplier_list.html', {'supplier': supplier})
 
+@manager_required    
+def supplier_detail(request, pk):
+    if request.user.is_authenticated:
+        supplier =  Supplier.objects.get(id=pk)
+        return render(request, 'supplier_detail.html', {'supplier': supplier})
+    else:
+        messages.success(request, "You must be logged in to view product details")
+        return redirect('home')   
+
+@manager_required      
+def add_supplier(request):
+    if request.method == 'POST':
+        form = SupplierForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "You have successfully added a supplier")
+            return redirect('supplier_list')  # Redirect to supplier list page
+    else:
+        form = SupplierForm()
+    return render(request, 'add_supplier.html', {'form': form})
+
+@manager_required  
+def update_supplier(request, pk):
+    supplier = get_object_or_404(Supplier, pk=pk)
+    if request.method == 'POST':
+        form = SupplierForm(request.POST, instance=supplier)
+        if form.is_valid():
+            form.save()
+            return redirect('supplier_list')  # Redirect to the supplier list page
+    else:
+        form = SupplierForm(instance=supplier)
+    return render(request, 'update_supplier.html', {'form': form})
+
+@manager_required  
+def delete_supplier(request, pk):
+    if request.user.is_authenticated:
+        delete_it = Supplier.objects.get(id=pk)
+        delete_it.delete()
+        messages.success(request, "Supplier deleted successfully")
+        return redirect('supplier_list')
+    else:
+        messages.success(request, "You must be logged in to delete the product")
+        return redirect('home')
+    
 def customer_list(request):
     customer = Customer.objects.all()
     return render(request, 'customer_list.html', {'customer': customer})
+
+@manager_required    
+def customer_detail(request, pk):
+    if request.user.is_authenticated:
+        customer =  Customer.objects.get(id=pk)
+        return render(request, 'customer_detail.html', {'customer': customer})
+    else:
+        messages.success(request, "You must be logged in to view product details")
+        return redirect('home')   
+
+@manager_required      
+def add_customer(request):
+    if request.method == 'POST':
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "You have successfully added a customer")
+            return redirect('customer_list')  # Redirect to supplier list page
+    else:
+        form = CustomerForm()
+    return render(request, 'add_customer.html', {'form': form})
+
+@manager_required  
+def update_customer(request, pk):
+    customer = get_object_or_404(Customer, pk=pk)
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, instance=customer)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Customer details successfully updated")
+            return redirect('customer_list')  # Redirect to the supplier list page
+    else:
+        form = CustomerForm(instance=customer)
+    return render(request, 'update_customer.html', {'form': form})
+
+@manager_required  
+def delete_customer(request, pk):
+    if request.user.is_authenticated:
+        delete_it = Customer.objects.get(id=pk)
+        delete_it.delete()
+        messages.success(request, "Customer deleted successfully")
+        return redirect('customer_list')
+    else:
+        messages.success(request, "You must be logged in to delete customer records")
+        return redirect('home')
 
 #--------------------------------------------------
 #The following are the views for the product inventory list

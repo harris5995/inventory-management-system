@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+</div>
+<p class="card-text">
+  <strong>Company Name: </strong>{{ customer.name}}</p>
+
+<p class="card-text">
+<strong>Email: </strong>{{ customer.email }}
+</p>
+
+<p class="card-text">
+<strong>Phone: </strong>{{ customer.phone}}</p>
+</div>
+
+<br/><br/>
+<a href="{% url 'customer_list' %}" class="btn btn-secondary">Back</a>
+
+ <a href="{% url 'update_customer' customer.id %}" class="btn btn-secondary">Update Customer</a>
+
+ <a href="{% url 'delete_customer' customer.id %}" class="btn btn-danger">Delete</a>  
+		
+
+{% endblock %}

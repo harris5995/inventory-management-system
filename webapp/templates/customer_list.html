@@ -3,6 +3,8 @@
 
 <h1>Customer List</h1>
 
+<a href="{% url 'add_customer' %}" class="btn btn-primary mb-3">Add Customer</a>
+
 <table class="table table-striped table-hover table-bordered">
     <thead class="table-dark">
       <tr>
@@ -15,7 +17,7 @@
     <tbody>
         {% for customer in customer %}
       <tr>
-          <td>{{ customer.name }}</td>
+        <td><a href="{% url 'customer_detail' customer.id %}">{{ customer.name }}</a></td> 
           <td>{{ customer.email }}</td>
           <td>{{ customer.phone }}</td>
 

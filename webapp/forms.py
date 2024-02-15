@@ -32,6 +32,20 @@ class SignUpForm(UserCreationForm):
         self.fields['password2'].label = ''
         self.fields['password2'].help_text = '<span class="form-text text-muted"><small>Enter the same password as before, for verification.</small></span>'
 
+#Add Supplier Form
+class SupplierForm(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = ['name', 'email', 'phone']
+        labels = {
+            'pic': 'Person In Charge', 
+        } 
+
+class CustomerForm(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = ['name', 'email', 'phone']
+
 
 #Add Inventory Products Form
 class AddProductInventoryForm(forms.ModelForm):

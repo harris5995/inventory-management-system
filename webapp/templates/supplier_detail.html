@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+</div>
+<p class="card-text">
+  <strong>Company Name: </strong>{{ supplier.name}}</p>
+
+<p class="card-text">
+<strong>Person In Charge: </strong>{{ supplier.pic}}</p>
+
+<p class="card-text">
+<strong>Email: </strong>{{ supplier.email }}
+</p>
+
+<p class="card-text">
+<strong>Phone: </strong>{{ supplier.phone}}</p>
+</div>
+
+<br/><br/>
+<a href="{% url 'supplier_list' %}" class="btn btn-secondary">Back</a>
+
+ <a href="{% url 'update_supplier' supplier.id %}" class="btn btn-secondary">Update Supplier</a>
+
+ <a href="{% url 'delete_supplier' supplier.id %}" class="btn btn-danger">Delete</a>  
+		
+
+{% endblock %}

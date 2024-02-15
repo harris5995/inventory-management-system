@@ -6,8 +6,18 @@ urlpatterns = [
     #path('login/', views.login_user, name='login'),
     path('logout/', views.logout_user, name='logout'),
     path('register/', views.register_user, name='register'),
+
     path('supplier_list/', views.supplier_list, name='supplier_list'),
+    path('supplier/<int:pk>', views.supplier_detail, name='supplier_detail'),
+    path('add_supplier/', views.add_supplier, name='add_supplier'),
+    path('update_supplier/<int:pk>/', views.update_supplier, name='update_supplier'),
+    path('delete_supplier/<int:pk>/', views.delete_supplier, name='delete_supplier'),
+
     path('customer_list/', views.customer_list, name='customer_list'),
+    path('customer/<int:pk>', views.customer_detail, name='customer_detail'),
+    path('add_customer/', views.add_customer, name='add_customer'),
+    path('update_customer/<int:pk>/', views.update_customer, name='update_customer'),
+    path('delete_customer/<int:pk>/', views.delete_customer, name='delete_customer'),
 
     path('inventory_product_list/', views.inventory_product_list, name='inventory_product_list'),
     path('inventory_product/<int:pk>', views.inventory_product_detail, name='inventory_product_detail'),
